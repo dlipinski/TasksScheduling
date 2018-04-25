@@ -1,44 +1,82 @@
-#container{
-    width:80%;
-    margin: 0 auto;
+body {
+  font-family: 'Tajawal', sans-serif;
 }
-
-#nodes{
-    width:25%;
-    border: 1px solid lightgrey;
-    border-radius: 5px;
-    min-height:300px;
-    display: inline-block;
-    text-align: center;
-
-    background: lightcyan;
+div#container {
+  width: 80%;
+  margin: 0 auto;
 }
-
-#graph{
-    width:70%;
-    border: 1px solid lightgrey;
-    border-radius: 5px;
-    min-height: 300px;
-    display: inline-block;
-
-    background: lightcyan;
-
+div#containerNodesMachines {
+  width: 25%;
+  display: inline-block;
+  top: 10;
+  left: 50;
 }
-td{
-    width:30%;
-    text-align: center;
+div#nodes {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  min-height: 400px;
+  text-align: center;
+  background: lightcyan;
 }
-input{
-    width:100%;
+div#machines {
+  margin-top: 5px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  min-height: 130px;
+  background: lightcyan;
+  text-align: center;
 }
-.click{
-    background: lightgreen;
-    border-radius: 15px;
-    text-align: center;
+div#containerGraphChart {
+  width: 70%;
+  display: inline-block;
 }
-
-h3.header{
-    text-align:center;
-    border-bottom:1px solid lightgray;
-    padding-bottom: 5px;
+div#graph {
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  min-height: 300px;
+  background: lightcyan;
+}
+div#chart {
+  margin-top: 5px;
+  border-radius: 5px;
+  width: 99%;
+  min-height: 300px;
+  border: 1px solid lightgrey;
+  background: lightcyan;
+}
+div#loadSample {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  background: lightpink;
+  padding: 10px;
+  border-radius: 0px 20px 20px 0px;
+}
+div#loadSample:hover {
+  background: #ff8396;
+}
+div#machiness {
+  margin: 0 auto;
+  font-size: 40px;
+  text-align: center;
+  width: 80%;
+  border: 1px solid lightgray;
+  border-radius: 10px;
+}
+div td {
+  width: 30%;
+  text-align: center;
+}
+div td.click {
+  background: lightgreen;
+  border-radius: 15px;
+  text-align: center;
+}
+div input {
+  width: 80%;
+}
+div h3.header {
+  text-align: center;
+  border-bottom: 1px solid lightgray;
+  padding-bottom: 5px;
 }
