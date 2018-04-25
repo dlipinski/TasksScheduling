@@ -1,0 +1,44 @@
+#container{
+    width:80%;
+    margin: 0 auto;
+}
+
+#nodes{
+    width:25%;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    min-height:300px;
+    display: inline-block;
+    text-align: center;
+
+    background: lightcyan;
+}
+
+#graph{
+    width:70%;
+    border: 1px solid lightgrey;
+    border-radius: 5px;
+    min-height: 300px;
+    display: inline-block;
+
+    background: lightcyan;
+
+}
+td{
+    width:30%;
+    text-align: center;
+}
+input{
+    width:100%;
+}
+.click{
+    background: lightgreen;
+    border-radius: 15px;
+    text-align: center;
+}
+
+h3.header{
+    text-align:center;
+    border-bottom:1px solid lightgray;
+    padding-bottom: 5px;
+}
