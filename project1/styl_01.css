@@ -1,9 +1,6 @@
 body {
   font-family: 'Tajawal', sans-serif;
 }
-div {
-  background: lig;
-}
 div#container {
   width: 80%;
   margin: 0 auto;
@@ -79,6 +76,18 @@ div#loadFromCsv {
 div#loadFromCsv:hover {
   background: #56baf8;
 }
+div#help {
+  position: fixed;
+  font-size: 20px;
+  top: 215px;
+  left: 0;
+  background: #f0f076;
+  padding: 10px;
+  border-radius: 0px 20px 20px 0px;
+}
+div#help:hover {
+  background: #e6e61a;
+}
 div#wipeData {
   position: fixed;
   font-size: 20px;
@@ -99,6 +108,13 @@ div#machiness {
   border: 1px solid lightgray;
   border-radius: 10px;
 }
+div#helpContent {
+  color: darkred;
+  border-radius: 10px;
+  font-size: 15px;
+  background: lightgoldenrodyellow;
+  padding: 5px;
+}
 td {
   width: 30%;
   text-align: center;
@@ -111,12 +127,12 @@ td.click {
 td.click:hover {
   background: #64e764;
 }
-td.edit {
+td.save {
   background: #ffffad;
   border-radius: 15px;
   text-align: center;
 }
-td.edit:hover {
+td.save:hover {
   background: #ffff7a;
 }
 input {

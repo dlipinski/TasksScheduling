@@ -83,6 +83,20 @@ div{
             background: darken(lightskyblue,10%)
         }
     }
+    &#help{
+        position: fixed;
+        font-size:20px;
+        top:215px;
+        left: 0;
+        background: darken(lightgoldenrodyellow,20%);
+    
+        padding: 10px;
+        border-radius: 0px 20px 20px 0px;
+    
+        &:hover{
+            background: darken(lightgoldenrodyellow,40%);
+        }
+    }
     &#wipeData{
         position: fixed;
         font-size:20px;
@@ -104,7 +118,13 @@ div{
         border:1px solid lightgray;
         border-radius:10px;
     }
-    background: lig
+    &#helpContent{
+        color: darkred;
+        border-radius: 10px;
+        font-size: 15px;
+        background: lightgoldenrodyellow;
+        padding: 5px;
+    }
     
 }
 td{
@@ -119,14 +139,14 @@ td{
 
         }
     }
-    &.edit{
+    &.save{
         
         background: darken(lightyellow,10%);
         border-radius: 15px;
         text-align: center;
+
         &:hover{
             background: darken(lightyellow,20%);
-
         }
     }
 }

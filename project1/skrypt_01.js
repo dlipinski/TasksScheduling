@@ -3,6 +3,8 @@ $(() => {
     //Init nodes Array
     let nodes = [];
     $('#filepicker').hide();
+    $('#helpContent').hide();
+    
     
     //------------------------------------------------------------------------------------------------------------------------------------------------ DRAWING SHIT START
     var GO = go.GraphObject.make;
@@ -37,7 +39,9 @@ $(() => {
             return;
         } 
     });
-
+    $('#help').click( function () {
+        $('#helpContent').toggle();
+    });
     $('#loadFromCsv').click( function () {
         let vis = $('#loadFromCsv').attr('pickerVisible');
 
@@ -208,19 +212,57 @@ $(() => {
         myDiagram.model = myModel;
         
     }
-
+    
     function drawTable(){
         let tbody = $('#nodesTable').find('tbody');
         tbody.html('');
         nodes.forEach ( (node) => {  
-            tbody.append($("<tr class='hoverTr'>")
-            .append($('<td style="">').text(node.index))
-            .append($('<td style="border-left: 1px dotted lightgrey;">').text(node.children))
-            .append($('<td style="border-left: 1px dotted lightgrey;">').text(node.duration))
-            .append($('<td style="border-left: 1px dotted lightgrey;" class="edit">').text('edit'))
+            tbody.append($("<tr class='hoverTr' id='actable'>")
+            .append($('<td id ="index" class = "actableElement" style="">').text(node.index))
+            .append($('<td id = "children" class = "actableElement" style="border-left: 1px dotted lightgrey;">').text(node.children))
+            .append($('<td id="duration" class = "actableElement" style="border-left: 1px dotted lightgrey;">').text(node.duration))
+            .append($('<td  style="border-left: 1px dotted lightgrey; " class="save">').text('save'))
             );
         });  
+
+        $('.save').hide();
+        $('td.actableElement').attr('isOpen','false');
+
+        $('td.actableElement').dblclick( function () {
+            if($(this).attr('isOpen')=='true'){
+                return;
+            }
+            $(this).attr('isOpen','true');
+            let value = $(this).html().replace(/\A/g, '');
+            $(this).html('');
+            $(this).append($('<input>',{
+                val: value,
+                id: $(this).attr('id')
+            }));
+            $(this).parent().find('.save').toggle();
+
+        });
+
+        $('.save').click( function () {
+            let row = $(this).parent();
+
+            let index = row.find('input#index').val() || row.find('td#index').html();
+            let children = row.find('input#children').val() ||    row.find('td#children').html();
+            let duration = row.find('input#duration').val() || row.find('td#duration').html();
+
+            row.find('td#index').html(index);
+            row.find('td#children').html(children);
+            row.find('td#duration').html(duration);
+
+            row.find('input').remove();
+
+            editNode(index,children,duration);
+          
+   
+        });
     }
+    
+    
 
     function drawChart(){
         let chartTable = $('#chartTable');
