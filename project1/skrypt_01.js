@@ -20,13 +20,27 @@ $(() => {
         });
 
     myDiagram.nodeTemplate =
-    GO(go.Node, "Auto",
-        GO(go.Panel,"Horizontal",
-            GO(go.Shape, {margin: new go.Margin(0, 0, 0, 23), figure: "Ellipse",fill:"Lightblue", maxSize: new go.Size(50,50)}),
-            GO(go.TextBlock, { margin: new go.Margin(0, 0, 0, 2),font: "bold 12pt serif" }, new go.Binding("text", "key")),
-            GO(go.TextBlock,{ margin: new go.Margin(0, 0, 0, -57) , stroke: "red" ,font: "bold 14pt serif"} ,new go.Binding("text", "name"))
-        )
+    GO(go.Node, "Horizontal",
+        
+        GO(go.Panel,go.Panel.Auto,
+            GO( go.Shape, "Circle",{ fill:"white",  desiredSize: new go.Size(50,50),portId: ""} ),
+                GO(go.TextBlock,{  stroke: "darkred" ,font: "normal 14pt serif"} ,new go.Binding("text", "name"))
+             
+                
+        ),
+        GO(go.TextBlock, {font: "normal 12pt serif" }, new go.Binding("text", "key"))   
     );
+
+
+
+    myDiagram.linkTemplate =
+    GO(go.Link,
+      { routing: go.Link.AvoidsNodes ,  // Orthogonal routing
+        corner: 10 },  // link route should avoid nodes
+      GO(go.Shape),
+      GO(go.Shape, { toArrow: "Standard" })
+    );
+
     var myModel = GO(go.GraphLinksModel);
     //------------------------------------------------------------------------------------------------------------------------------------------------ DRAWING SHIT END
     $('#wipeData').click( function () {
@@ -214,6 +228,7 @@ $(() => {
                 nodesFrom.push({from: node.index, to: child});
             }); 
         });
+
         myModel.nodeDataArray = nodesKeys;
         myModel.linkDataArray = nodesFrom;
         myDiagram.model = myModel;
