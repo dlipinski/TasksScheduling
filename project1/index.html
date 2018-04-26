@@ -7,38 +7,55 @@
     <link rel="stylesheet" media="screen" href="styl_01.css" />
    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.8.17/go-debug.js"></script>    <script src="skrypt_01.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gojs/1.8.17/go-debug.js"></script>   
+    <script src="cpm.js"></script>
+    <script src="skrypt_01.js"></script>
+    
+
 </head>
 <body>
     <div id="container">
+        <div id="wipeData">Wipe data</div>
         <div id="loadSample">Load sample</div>
         <div id="containerNodesMachines">
             <div id="nodes">
-                <h3 class="header">Nodes</h3>
+                <h3 class="header">Activities</h3>
                 <table id="nodesTable">
                     <thead>
                         <tr>
                             <td>Index</td>
                             <td>Children</td>
-                            <td>Value</td>
+                            <td>Duration</td>
                             <td></td>
+                        </tr>
+                        <tr>
+                                <td><input id="index" placeholder="1"></td>
+                                <td><input id="children" placeholder="2,3"></td>
+                                <td><input id="duration" placeholder="2"></td>
+                                <td class="click">add</td>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><input id="index"></td>
-                            <td><input id="children"></td>
-                            <td><input id="value"></td>
-                            <td class="click">v</td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>
             <div id="machines">
-                <h3 class="header">Machines</h3>
-                    <div id="machinesMinus" style="font-size:40px;border-radius:5px;padding:5px 0x 5px 0px;display:inline-block;width:30%; background: lightpink;height:40px;">-</div>
-                    <div id="machinesAmount" style="height:40px;font-size:40px;border-radius:5px;padding:5px 0x 0px 0px;display:inline-block;width:30%; background: white;border: 1px solid lightgrey;">1</div>
-                    <div id="machinesPlus"style="font-size:40px;border-radius:5px;padding:5px 0x 5px 0px;display:inline-block;width:30%; background: lightgreen;height:40px;">+</div>
+                <h3 class="header">CPM Data</h3>
+                    <table id="cpmData" style="border-collapse: separate; width:95%; margin: 0 auto;" >
+                        <thead >
+                            <tr style="border:1px solid lightgrey;">
+                                <td style="width:28%; border-bottom: 1px dotted lightgrey;"><b>Activity</b></td>
+                                <td style="width:18%; border-left: 1px dotted lightgrey;border-bottom: 1px dotted lightgrey;"><b>est</b></td>
+                                <td style="width:18%; border-left: 1px dotted lightgrey;border-bottom: 1px dotted lightgrey;"><b>eet</b></td>
+                                <td style="width:18%; border-left: 1px dotted lightgrey;border-bottom: 1px dotted lightgrey;"><b>lst</b></td>
+                                <td style="width:18%; border-left: 1px dotted lightgrey;border-bottom: 1px dotted lightgrey;"><b>let</b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                           
+                        </tbody>
+                    </table>
 
             </div>
         </div>
@@ -47,8 +64,14 @@
                     <h3 class="header">Graph</h3>
                     <div id="myDiagramDiv"style="width:100%; min-height:400px;"></div>   
             </div>
-            <div id="chart">
+            <div id="chart" >
+                
                     <h3 class="header">Chart</h3>
+                    <div id="chartInside">
+                        <table id="chartTable" style="width:100%;" cellspacing="0" cellpadding="0">
+                    </div>
+                    </table>
+                
             </div>  
         </div>  
 

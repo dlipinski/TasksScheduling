@@ -1,6 +1,9 @@
 body {
   font-family: 'Tajawal', sans-serif;
 }
+div {
+  background: lig;
+}
 div#container {
   width: 80%;
   margin: 0 auto;
@@ -44,15 +47,36 @@ div#chart {
   border: 1px solid lightgrey;
   background: lightcyan;
 }
+div#chart #chartInside {
+  width: 90%;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  background: white;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+}
 div#loadSample {
   position: fixed;
+  font-size: 20px;
+  top: 100px;
+  left: 0;
+  background: lightskyblue;
+  padding: 10px;
+  border-radius: 0px 20px 20px 0px;
+}
+div#loadSample:hover {
+  background: #56baf8;
+}
+div#wipeData {
+  position: fixed;
+  font-size: 20px;
   top: 50px;
   left: 0;
   background: lightpink;
   padding: 10px;
   border-radius: 0px 20px 20px 0px;
 }
-div#loadSample:hover {
+div#wipeData:hover {
   background: #ff8396;
 }
 div#machiness {
@@ -63,20 +87,41 @@ div#machiness {
   border: 1px solid lightgray;
   border-radius: 10px;
 }
-div td {
+td {
   width: 30%;
   text-align: center;
 }
-div td.click {
+td.click {
   background: lightgreen;
   border-radius: 15px;
   text-align: center;
 }
-div input {
+td.click:hover {
+  background: #64e764;
+}
+input {
   width: 80%;
 }
-div h3.header {
+h3.header {
   text-align: center;
   border-bottom: 1px solid lightgray;
   padding-bottom: 5px;
+}
+#cpmData {
+  padding: 10px;
+}
+.hoverTr:hover {
+  background: lightgray;
+}
+.hoverTr:hover :first-child td:first-child {
+  border-top-left-radius: 10px;
+}
+.hoverTr:hover :first-child td:last-child {
+  border-top-right-radius: 10px;
+}
+.hoverTr:hover :last-child td:first-child {
+  border-bottom-left-radius: 10px;
+}
+.hoverTr:hover :last-child td:last-child {
+  border-bottom-right-radius: 10px;
 }
