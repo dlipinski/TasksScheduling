@@ -58,13 +58,25 @@ div#chart #chartInside {
 div#loadSample {
   position: fixed;
   font-size: 20px;
-  top: 100px;
+  top: 105px;
+  left: 0;
+  background: lightgreen;
+  padding: 10px;
+  border-radius: 0px 20px 20px 0px;
+}
+div#loadSample:hover {
+  background: #64e764;
+}
+div#loadFromCsv {
+  position: fixed;
+  font-size: 20px;
+  top: 160px;
   left: 0;
   background: lightskyblue;
   padding: 10px;
   border-radius: 0px 20px 20px 0px;
 }
-div#loadSample:hover {
+div#loadFromCsv:hover {
   background: #56baf8;
 }
 div#wipeData {
@@ -99,8 +111,19 @@ td.click {
 td.click:hover {
   background: #64e764;
 }
+td.edit {
+  background: #ffffad;
+  border-radius: 15px;
+  text-align: center;
+}
+td.edit:hover {
+  background: #ffff7a;
+}
 input {
   width: 80%;
+  border-radius: 10px;
+  border: 1px solid lightgray;
+  text-align: center;
 }
 h3.header {
   text-align: center;
@@ -110,18 +133,15 @@ h3.header {
 #cpmData {
   padding: 10px;
 }
-.hoverTr:hover {
+.hoverTr {
+  border-radius: 10px;
+}
+.hoverTr td {
+  border-radius: 10px;
+}
+.hoverTr:hover td {
   background: lightgray;
 }
-.hoverTr:hover :first-child td:first-child {
-  border-top-left-radius: 10px;
-}
-.hoverTr:hover :first-child td:last-child {
-  border-top-right-radius: 10px;
-}
-.hoverTr:hover :last-child td:first-child {
-  border-bottom-left-radius: 10px;
-}
-.hoverTr:hover :last-child td:last-child {
-  border-bottom-right-radius: 10px;
+.hoverTr:hover td:hover {
+  background: #bababa;
 }

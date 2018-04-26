@@ -2,7 +2,7 @@
 $(() => {
     //Init nodes Array
     let nodes = [];
-
+    $('#filepicker').hide();
     
     //------------------------------------------------------------------------------------------------------------------------------------------------ DRAWING SHIT START
     var GO = go.GraphObject.make;
@@ -37,19 +37,97 @@ $(() => {
             return;
         } 
     });
-    function insertNode(index,children,duration){
+
+    $('#loadFromCsv').click( function () {
+        let vis = $('#loadFromCsv').attr('pickerVisible');
+
+        if(vis==='true'){
+            $('#loadFromCsv').attr('pickerVisible','false');
+            $('#filepicker').hide();
+        }else{ 
+            if (confirm("You will lose your work. Sure?")) {
+                $('#loadFromCsv').attr('pickerVisible','true');
+                $('#filepicker').show();
+            } else {
+                return;
+            } 
+        }
+    });
+
+    $('#filepicker').on( 'input', function () {
+        if (!window.FileReader) {
+            alert('Your browser is not supported')
+        }
+        var input =  $('#filepicker').get(0);
+        
+        // Create a reader object
+        var reader = new FileReader();
+        if (input.files.length) {
+            var textFile = input.files[0];
+            reader.readAsText(textFile);
+            $(reader).on('load', processFile);
+        } else {
+            alert('Please upload a file before continuing')
+        } 
+    });
+
+    function processFile(e) {
+        var file = e.target.result,
+            results;
+        if (file && file.length) {
+            let dataLines = file.split('\n');
+            
+            dataLines.forEach ( (line) => { 
+                let nodeData = line.split(';');
+                insertNode(nodeData[0],nodeData[1].split(','),nodeData[2]);
+            });
+                drawGraph();
+                drawTable();
+                drawChart();
+            
+        }
+    }
+
+    function validNode(index,children,duration){
         //check if index is integer
         if(!(Number.isInteger(parseInt(index)))) { alert('Index must be integer!');return false; }
         let childrenNotOk = false;
-        for (let i=0;i<children.length;i++){
-            if(!(Number.isInteger(parseInt(children[i])))) {childrenNotOk=true;}
-        }
+        //check children
+        if(children.length ==1 && children[0]=='')
+            children=[];
+        else
+            for (let i=0;i<children.length;i++){
+                if(!(Number.isInteger(parseInt(children[i])))) {childrenNotOk=true;}
+            }
+        
         if(childrenNotOk) { alert('Chidren must be list of integers!');return false; }
         //check if duration is integer
         if(!(Number.isInteger(parseInt(duration)))) { alert('Duration must be integer!');return false; }
         
         //check if ! activity -> activity
         if(children.includes(index)) { alert('No loops!');return false; }
+
+        return true;
+    }
+
+    function editNode(index,children,duration){
+        if(!(validNode(index,children,duration))) {return;}
+
+        nodes.forEach ( (node) => { 
+            if(node.index === index) {
+                node.children = children;
+                node.duration = duration;
+            }
+        });
+        drawGraph();
+        drawTable();
+        drawChart();
+
+    }
+    function insertNode(index,children,duration){
+        
+        if(!(validNode(index,children,duration))) {return;}
+        
         //reparse index
         index = 'A'+index;
         //reparse children
@@ -62,7 +140,7 @@ $(() => {
         //check if node with this index aready exists
         let exist = false;
         nodes.forEach ( (node) => { if(node.index === newNode.index) { exist = true; } } ) ;
-        if(exist) { alert('Node with index \''+newNode.index+'\' arleady exists!'); }
+        if(exist) { alert('Node with index \''+newNode.index+'\' arleady exists!'); return false; }
 
 
         nodes.push(newNode);
@@ -110,9 +188,6 @@ $(() => {
         row.find('#children').val('');
         row.find('#duration').val('');
 
-        
-
-
         drawGraph();
         drawTable();
         drawChart();
@@ -138,11 +213,11 @@ $(() => {
         let tbody = $('#nodesTable').find('tbody');
         tbody.html('');
         nodes.forEach ( (node) => {  
-            tbody.append($("<tr class='record'>")
-            .append($('<td>').text(node.index))
-            .append($('<td>').text(node.children))
-            .append($('<td>').text(node.duration))
-            .append($('<td>').text())
+            tbody.append($("<tr class='hoverTr'>")
+            .append($('<td style="">').text(node.index))
+            .append($('<td style="border-left: 1px dotted lightgrey;">').text(node.children))
+            .append($('<td style="border-left: 1px dotted lightgrey;">').text(node.duration))
+            .append($('<td style="border-left: 1px dotted lightgrey;" class="edit">').text('edit'))
             );
         });  
     }
