@@ -97,12 +97,13 @@ $(() => {
         if(!(Number.isInteger(parseInt(index)))) { alert('Index must be integer!');return false; }
         let childrenNotOk = false;
         //check children
-        if(children.length ==1 && children[0]=='')
+        if(children.length ===1 && children[0]==''){
             children=[];
-        else
+        } else {
             for (let i=0;i<children.length;i++){
                 if(!(Number.isInteger(parseInt(children[i])))) {childrenNotOk=true;}
             }
+        }
         
         if(childrenNotOk) { alert('Chidren must be list of integers!');return false; }
         //check if duration is integer
@@ -116,6 +117,12 @@ $(() => {
 
     function editNode(index,children,duration){
         if(!(validNode(index,children,duration))) {return;}
+        //reparse index
+        index = 'A'+index;
+        //reparse children
+        for (let i=0;i<children.length;i++){
+            children[i]='A'+children[i];
+        }
 
         nodes.forEach ( (node) => { 
             if(node.index === index) {
@@ -239,24 +246,24 @@ $(() => {
                 val: value,
                 id: $(this).attr('id')
             }));
-            $(this).parent().find('.save').toggle();
+            $(this).parent().find('.save').show();
 
         });
 
         $('.save').click( function () {
             let row = $(this).parent();
-
+            row.find('save').hide();
             let index = row.find('input#index').val() || row.find('td#index').html();
-            let children = row.find('input#children').val() ||    row.find('td#children').html();
+            let children1 = row.find('input#children').val() ||    row.find('td#children').html() ;
             let duration = row.find('input#duration').val() || row.find('td#duration').html();
+            
+            if(children1.indexOf('input')>=0) { children1 = ''; }
+            let children  = [];
+            children = children1.replace(/\A/g, '').split(',');
+            
+            console.log({index: index.replace(/\A/g, ''),children,duration});
 
-            row.find('td#index').html(index);
-            row.find('td#children').html(children);
-            row.find('td#duration').html(duration);
-
-            row.find('input').remove();
-
-            editNode(index,children,duration);
+            editNode(index.replace(/\A/g, ''),children,duration);
           
    
         });
