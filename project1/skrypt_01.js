@@ -5,12 +5,15 @@ $(() => {
     $('#filepicker').hide();
     $('#helpContent').hide();
     
-    
+    let myHeight = 0;
     //------------------------------------------------------------------------------------------------------------------------------------------------ DRAWING SHIT START
     var GO = go.GraphObject.make;
     var myDiagram =
     GO(go.Diagram, "myDiagramDiv",
-        {
+        {"DocumentBoundsChanged": function(e) {
+            var dia = e.diagram;
+            $('#myDiagramDiv').height(dia.documentBounds.height);
+          },
         "undoManager.isEnabled": true, // enable Ctrl-A to undo and Ctrl-Y to redo
         layout: GO(go.TreeLayout, // specify a Diagram.layout that arranges trees
                     { angle: 90, layerSpacing: 50 }),
@@ -219,6 +222,7 @@ $(() => {
     });
 
     function drawGraph(){
+        // Model.addNodeDataCollection and GraphLinksModel.addLinkDataCollection.
         let nodesKeys = [];
         let nodesFrom = [];
 
@@ -232,7 +236,6 @@ $(() => {
         myModel.nodeDataArray = nodesKeys;
         myModel.linkDataArray = nodesFrom;
         myDiagram.model = myModel;
-        
     }
     
     function drawTable(){
