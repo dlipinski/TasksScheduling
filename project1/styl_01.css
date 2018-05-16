@@ -17,6 +17,8 @@ div#nodes {
   min-height: 400px;
   text-align: center;
   background: lightcyan;
+  float: top;
+  self-align: top;
 }
 div#machines {
   margin-top: 5px;

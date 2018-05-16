@@ -1,4 +1,4 @@
-//jshint browser: true, esversion:6, jquery:true
+//jshint browser: true, esversion:6, jquery:true, devel: true
 $(() => {
     //Init nodes Array
     let nodes = [];
@@ -77,7 +77,7 @@ $(() => {
 
     $('#filepicker').on( 'input', function () {
         if (!window.FileReader) {
-            alert('Your browser is not supported')
+            alert('Your browser is not supported');
         }
         var input =  $('#filepicker').get(0);
         
@@ -88,7 +88,7 @@ $(() => {
             reader.readAsText(textFile);
             $(reader).on('load', processFile);
         } else {
-            alert('Please upload a file before continuing')
+            alert('Please upload a file before continuing');
         } 
     });
 
@@ -109,38 +109,116 @@ $(() => {
         }
     }
 
-    function validNode(index,children,duration){
+//------------------------------------------------------------------------------- DETECT CYCLE
+    function getNodeChildren(node){
+        let children = [];
+        
+        for(let i=0; i< node.children.length;i++){
+            for(let j=0;j<nodes.length;j++){
+                if(node.children[i]===nodes[j].index){
+                    children.push(nodes[j]);
+                }
+            }
+        }
+        return children;
+    }
+    
+    function copy(o) {
+        var output, v, key;
+        output = Array.isArray(o) ? [] : {};
+        for (key in o) {
+            v = o[key];
+            output[key] = (typeof v === "object") ? copy(v) : v;
+        }
+        return output;
+    }
+
+    function detectCycle(index,children,duration){
+
+        let graphNodes = copy(nodes);
+        const visited= {};
+        const recStack = {};
+
+        for( let i=0;i<graphNodes.length;i++){
+            const node = graphNodes[i];
+            if(detectCycleUtil(node,visited,recStack)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function detectCycleUtil(vertex, visited, recStack) {
+        if(!visited[vertex.index]){
+            
+            visited[vertex.index] = true;
+            recStack[vertex.index] = true;
+            const nodeChildren = getNodeChildren(vertex);
+            for(let i = 0; i< nodeChildren.length; i++){
+                const currentNode = nodeChildren[i];
+                if(!visited[currentNode.index] && detectCycleUtil(currentNode,visited,recStack)){
+                    return true;
+                } else if (recStack[currentNode.index]){
+                    return true;
+                }
+            }
+        }
+        recStack[vertex.index] = false;
+        return false;
+    }
+//-------------------------------------------------------------------------------
+    function validNode(index,children,duration,create){
         //check if index is integer
         if(!(Number.isInteger(parseInt(index)))) { alert('Index must be integer!');return false; }
-        let childrenNotOk = false;
+        
         //check children
+        let childrenNotIntegers = false;
         if(children.length ===1 && children[0]==''){
             children=[];
         } else {
             for (let i=0;i<children.length;i++){
-                if(!(Number.isInteger(parseInt(children[i])))) {childrenNotOk=true;}
+                if(!(Number.isInteger(parseInt(children[i])))) {childrenNotIntegers=true;}
             }
         }
+        if(childrenNotIntegers) { alert('Chidren must be list of integers!');return false; }
         
-        if(childrenNotOk) { alert('Chidren must be list of integers!');return false; }
         //check if duration is integer
         if(!(Number.isInteger(parseInt(duration)))) { alert('Duration must be integer!');return false; }
         
-        //check if ! activity -> activity
+        //check if node with this index aready exists if not edit
+        if(create){
+            let exist = false;
+            nodes.forEach ( (node) => { if(node.index === ('A'+index)) { exist = true; } } ) ;
+            if(exist) { alert('Node with index \''+index+'\' arleady exists!'); return false; }
+        }
+        
+        //check if not father to itself
         if(children.includes(index)) { alert('No loops!');return false; }
 
+        //Check if children does not include fathers
+    
+        if(detectCycle(index,children,duration)){ alert('No loops!');return false; }
+        
+    
         return true;
     }
-
+    function deleteNode(index){
+        for(let i=0;i<nodes.length;i++){
+            if(nodes[i].index===index){
+                nodes.splice(i,1);
+            }
+        }
+    }
     function editNode(index,children,duration){
-        if(!(validNode(index,children,duration))) {return;}
+        if(!(validNode(index,children,duration,false))) {return;}
         //reparse index
         index = 'A'+index;
         //reparse children
-        for (let i=0;i<children.length;i++){
-            children[i]='A'+children[i];
+        if(!(children.length ===1 && children[0]=='')){
+            for (let i=0;i<children.length;i++){
+                children[i]='A'+children[i];
+            }
         }
-
         nodes.forEach ( (node) => { 
             if(node.index === index) {
                 node.children = children;
@@ -152,23 +230,22 @@ $(() => {
         drawChart();
 
     }
+
     function insertNode(index,children,duration){
         
-        if(!(validNode(index,children,duration))) {return;}
+        if(!(validNode(index,children,duration,true))) {return;}
         
         //reparse index
         index = 'A'+index;
         //reparse children
-        for (let i=0;i<children.length;i++){
-            children[i]='A'+children[i];
+        if(!(children.length ===1 && children[0]=='')){
+            for (let i=0;i<children.length;i++){
+                children[i]='A'+children[i];
+            }
         }
 
-        let newNode = {index, children,duration};
+        let newNode = {index, children, duration};
 
-        //check if node with this index aready exists
-        let exist = false;
-        nodes.forEach ( (node) => { if(node.index === newNode.index) { exist = true; } } ) ;
-        if(exist) { alert('Node with index \''+newNode.index+'\' arleady exists!'); return false; }
 
 
         nodes.push(newNode);
@@ -207,9 +284,7 @@ $(() => {
         if (index === ''  || duration === '') { alert('Fields can not be empty!'); return;}
         
         //insert new node
-        if(!
-            insertNode(index,children,duration)
-        ){ return;}
+        if(!insertNode(index,children.slice(0),duration)){ return;}
 
         //clear inputs
         row.find('#index').val('');
@@ -279,7 +354,7 @@ $(() => {
             let children  = [];
             children = children1.replace(/\A/g, '').split(',');
             
-            console.log({index: index.replace(/\A/g, ''),children,duration});
+            //console.log({index: index.replace(/\A/g, ''),children,duration});
 
             editNode(index.replace(/\A/g, ''),children,duration);
           
@@ -372,7 +447,7 @@ $(() => {
             if(color!=='none'){
                 myTd += 'background: ' + color+';';
             }else {
-                myTd += 'border-left: 1px dotted lightgrey; '
+                myTd += 'border-left: 1px dotted lightgrey; ';
             }
 
             if(side!=='none'){
@@ -388,11 +463,11 @@ $(() => {
         function GiveColor (number) {
             switch(number%6) {
                 case 0: return 'lightblue'; 
-            case 1: return 'lightgreen';
-            case 2: return 'lightcoral';
-            case 3: return 'lightskyblue';
-            case 4: return 'lightsalmon';
-            case 5: return 'lightseagreen';
+                case 1: return 'lightgreen';
+                case 2: return 'lightcoral';
+                case 3: return 'lightskyblue';
+                case 4: return 'lightsalmon';
+                case 5: return 'lightseagreen';
             }
         } 
         for(let i=0;i<nodesLength;i++){
