@@ -196,10 +196,9 @@ $(() => {
         if(children.includes(index)) { alert('No loops!');return false; }
 
         //Check if children does not include fathers
-    
-        if(detectCycle(index,children,duration)){ alert('No loops!');return false; }
-        
-    
+        insertNode(index,children.slice(0),duration,true);
+        if(detectCycle(index,children,duration)){ alert('No loops!');deleteNode('A'+index);return false; }
+        deleteNode('A'+index);
         return true;
     }
     function deleteNode(index){
@@ -209,6 +208,7 @@ $(() => {
             }
         }
     }
+
     function editNode(index,children,duration){
         if(!(validNode(index,children,duration,false))) {return;}
         //reparse index
@@ -231,9 +231,10 @@ $(() => {
 
     }
 
-    function insertNode(index,children,duration){
-        
-        if(!(validNode(index,children,duration,true))) {return;}
+    function insertNode(index,children,duration,validation){
+        if(!validation){
+            if(!(validNode(index,children,duration,true))) {return;}
+        }
         
         //reparse index
         index = 'A'+index;

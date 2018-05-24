@@ -186,7 +186,9 @@ function ActivityList() {
         end.let = end.eet;
         end.lst = end.let - end.duration;
         end.h  	= end.eet - end.let;
-        setLateTimes(start);
+        setLateTimes(
+            
+        );
 
         //Assemble Critical Path (tree)
 		var path = null;
