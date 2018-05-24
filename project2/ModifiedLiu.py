@@ -19,12 +19,6 @@ class ModifiedLiu:
     def get_activities_by_id(self,ids):
         return [a for a in self.activities if a.id in ids]
 
-    def fill_dimax(self):
-        for activity in self.activities:
-            current_activities_ids = self.graph.find_all_nodes(activity.id,7)
-            current_activities = self.get_activities_by_id(current_activities_ids)
-            activity.dimax =  min([a.dj for a in current_activities])
-
     def get_dimax(self):
         return [a.dimax for a in self.activities]
 
@@ -36,6 +30,13 @@ class ModifiedLiu:
 
     def get_Chart(self):
         return self.chart
+
+    def fill_dimax(self):
+        for activity in self.activities:
+            current_activities_ids = self.graph.find_all_nodes(activity.id,7)
+            current_activities = self.get_activities_by_id(current_activities_ids)
+            activity.dimax =  min([a.dj for a in current_activities])
+
 
     def fill_Li(self):
         while True:
