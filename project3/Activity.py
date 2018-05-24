@@ -12,6 +12,7 @@ class Activity:
         self.predecessors = predecessors
         self.level = 0
         self.dkmax = 0
+        self.Li = 0
         self.in_system = False
         self.done = False
     

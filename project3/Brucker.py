@@ -3,16 +3,15 @@ Created: 23.05.18
 Author: Dawid Lipinski
 
 """
-from Graph import Graph
 import sys
 import operator
 
 class Brucker:
     def __init__(self, activities, machines_amount):
         self.activities = activities
-        self.graph = Graph(activities)
         self.machines_amount = machines_amount
         self.chart = []
+        self.time = 0
         
     def get_activities(self):
         return self.activities
@@ -22,6 +21,9 @@ class Brucker:
         for level in [a.level for a in self.activities]:
             level_ids[level]=[a.id for a in self.activities if a.level == level]
         return sorted(level_ids.items(), key=operator.itemgetter(0), reverse = True)
+
+    def get_Limax(self):
+        return max([a.Li for a in self.activities])
 
     def get_chart(self):
         return self.chart
@@ -62,20 +64,27 @@ class Brucker:
 
     def do_it(self):
         while(True):
-            print([a.id for a in self.activities if a.done == True])
-            done_ids = [a.id for a in self.activities if a.done==True]
             orphan_ids = [a.id for a in self.activities if len(a.predecessors)==0]
             undone= [a for a in self.activities if a.done==False]
-            activities_undone_fathers_done = [u for u in undone if (u.id in orphan_ids) or any(elem in u.predecessors for elem in done_ids )]
+            my = []
+            for activity in undone:
+                isIt = True
+                for predecessor in activity.predecessors:
+                    predecessor_real = [a for a in self.activities if a.id == predecessor][0]
+                    if predecessor_real.done == False:
+                        isIt = False
+                if isIt or activity.id in [orphan_ids]:
+                    my.append(activity)
            
-            my_activities =sorted(activities_undone_fathers_done, key=lambda x: x.dkmax, reverse=True)[:self.machines_amount]
-
+            my_activities =sorted(my, key=lambda x: x.dkmax, reverse=True)[:self.machines_amount]
+            print([a.id for a in my_activities])
             self.chart.append(my_activities)
 
             for activity in my_activities:
                 activity.done = True
-            done_activities = [a for a in self.activities if a.done == True]
-
+                activity.Li =  activity.pi -  self.time
+            
+            self.time+=1
             if len(my_activities) == 0:
                 break
 

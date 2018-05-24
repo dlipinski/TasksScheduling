@@ -12,7 +12,18 @@ class HTMLData:
         self.Limax = Limax
         self.chart_data = chart_data
         self.activities = activities
-
+    def get_color(self,id):
+        if(id=='N'): return "black"
+        else:
+            number = id % 6
+            return{
+                0: "lightblue",
+                1:  "#C5E17F",
+                2:  "lightgreen",
+                3:  "#FE8F7B",
+                4:  "#8974FE",
+                5:  "#74FEA0"
+            }[number]
     def create_page(self):
         html_file= open("index.html","w+")
         html_file.write("<html>")
@@ -34,6 +45,8 @@ class HTMLData:
                 width:50px;
                 text-align:center;
                 border:1px solid grey;
+
+                padding:0; margin:0;
             }
             th{
                 border-right: 1px solid grey;
@@ -41,6 +54,8 @@ class HTMLData:
             }
             table{
                 background: white;
+
+                border-collapse: collapse;
             }
         </style>
         """)
@@ -50,7 +65,7 @@ class HTMLData:
         tr2 = "<tr>"
         for time,activity_id in self.chart_data.items():
             tr1 += "<th>" +str(time+1)+ "</th>"
-            tr2 += "<td>" +str(activity_id)+ "</td>"
+            tr2 += "<td style='background: {}'>".format(self.get_color(activity_id)) +str(activity_id)+ "</td>"
         tr1 += "</tr>"
         
         html_file.write(tr1)

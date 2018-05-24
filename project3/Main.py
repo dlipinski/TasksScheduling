@@ -47,7 +47,8 @@ def main():
     brucker.set_levels()
     brucker.set_d()
     brucker.do_it()
-    page = HTMLData(4,brucker.get_activities(),brucker.get_activities_sorted_level(),brucker.get_chart())
+    page = HTMLData(4,brucker.get_Limax(),brucker.get_activities(),brucker.get_activities_sorted_level(),brucker.get_chart())
     page.create_page()
+
 if __name__ == "__main__":
     main()
