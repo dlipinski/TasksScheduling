@@ -82,7 +82,7 @@ class Brucker:
 
             for activity in my_activities:
                 activity.done = True
-                activity.Li =  activity.pi -  self.time
+                activity.Li =  self.time +  activity.dkmax
             
             self.time+=1
             if len(my_activities) == 0:
