@@ -62,31 +62,6 @@ class Brucker:
         for activity in self.activities:
             print("Z{}.dkmax: {}".format(activity.id,activity.dkmax))
 
-    def do_it(self):
-        while(True):
-            orphan_ids = [a.id for a in self.activities if len(a.predecessors)==0]
-            undone= [a for a in self.activities if a.done==False]
-            my = []
-            for activity in undone:
-                isIt = True
-                for predecessor in activity.predecessors:
-                    predecessor_real = [a for a in self.activities if a.id == predecessor][0]
-                    if predecessor_real.done == False:
-                        isIt = False
-                if isIt or activity.id in [orphan_ids]:
-                    my.append(activity)
-           
-            my_activities =sorted(my, key=lambda x: x.dkmax, reverse=True)[:self.machines_amount]
-            print([a.id for a in my_activities])
-            self.chart.append(my_activities)
-
-            for activity in my_activities:
-                activity.done = True
-                activity.Li =  self.time +  activity.dkmax
-            
-            self.time+=1
-            if len(my_activities) == 0:
-                break
 
     def print_it(self):
         for activities in self.chart:
